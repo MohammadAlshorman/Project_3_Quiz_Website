@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="/css/profile.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Edit</title>
+    <link rel="shortcut icon" href="/images/logo2.png" type="image/x-icon">
+
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="css3/animate.css">
+
+    <link rel="stylesheet" href="css3/owl.carousel.min.css">
+    <link rel="stylesheet" href="css3/owl.theme.default.min.css">
+    <link rel="stylesheet" href="css3/magnific-popup.css">
+
+    <link rel="stylesheet" href="css3/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="css3/jquery.timepicker.css">
+
+
+    <link rel="stylesheet" href="css3/flaticon.css">
+    <link rel="stylesheet" href="css3/style.css">
+    <style>
+        #ftco-navbar {
+            background-color: #295e6a !important;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .error-message {
+            color: red;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .profile-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-header h1 {
+            font-size: 2em;
+            color: #333;
+        }
+
+        .edit-btn {
+            background-color: #295E6A;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .edit-btn:hover {
+            background-color: #D0E8E4;
+        }
+
+        .profile-details {
+            margin-top: 20px;
+        }
+
+        .profile-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .profile-label {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .profile-value {
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        .profile-image {
+            border-radius: 50%;
+        }
+
+        .edit-profile-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-50px);
+            transition: all 0.3s ease;
+        }
+
+        .edit-profile-modal.modal-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            width: 60%;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            height: 80%;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 30px;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .reset-password-btn {
+            background-color: #f44336;
+            color: white;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .reset-password-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        .reset-password-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-50px);
+            transition: all 0.3s ease;
+        }
+
+        .reset-password-modal.modal-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        button {
+            width: 30%;
+            background-color: #295E6A;
+            color: white;
+            padding: 8px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #D0E8E4;
+        }
+
+        @media only screen and (max-width: 425px) {
+            .profile-container {
+                width: 50%;
+                padding: 15px;
+            }
+
+            .profile-header h1 {
+                font-size: 1.5em;
+            }
+
+            .edit-btn {
+                font-size: 1em;
+                padding: 8px 16px;
+            }
+
+            .profile-label,
+            .profile-value {
+                font-size: 10px;
+            }
+
+            button {
+                font-size: 1em;
+                padding: 10px;
+            }
+
+            .modal-content {
+                padding: 30px;
+                width: 171%;
+                max-width: 100%;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
+
+            }
+
+            .modal-content h2 {
+                font-size: 1.5em;
+                text-align: center;
+            }
+
+            label {
+                font-size: 1em;
+                margin-bottom: 8px;
+            }
+
+            input,
+            select,
+            textarea {
+                width: 100%;
+                padding: 12px;
+                margin-bottom: 15px;
+                border-radius: 8px;
+                border: 1px solid #ddd;
+            }
+
+            button {
+                width: 100%;
+                padding: 15px;
+                font-size: 1.1em;
+            }
+
+            #close-modal {
+                font-size: 30px;
+                color: #333;
+                top: 10px;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+    <!-- <div id="header"></div><br><br><br> -->
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+        <div class="container">
+            <center>
+                <a class="navbar-brand" href="index.html" style="padding-left: 13px;">
+                    <img src="icon.png" style="margin-top: -3px; margin-left:1px; position: absolute; width: 30px;">
+                    <span style="margin-left: 35px;">NEXEL</span>
+                </a>
+            </center>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+                aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="oi oi-menu"></span> ☰
+            </button>
+
+            <div class="collapse navbar-collapse" id="ftco-nav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="about.html" class="nav-link">About Us</a></li>
+                    <li class="nav-item"><a href="contact.html" class="nav-link">Contact Us</a></li>
+                    <li class="nav-item"><a href="apply_test.html" class="nav-link" id="apply-btn">Apply Test</a></li>
+                    <!-- <li class="nav-item"><a href="register.html" class="nav-link" id="register-btn">Register</a></li> -->
+                    <!-- <li class="nav-item"><a href="login.html" class="nav-link" id="login-btn">Log In</a></li> -->
+                    <li class="nav-item"><a href="profile.html" class="nav-link" id="profile-btn">Profile</a></li>
+                    <li class="nav-item"><a href="index.html" class="nav-link" id="logout-btn">Log Out</a></li>
+
+
+
+                    <!-- رابط التسجيل -->
+                    <li class="nav-item">
+                        <a href="register.html" class="nav-link" id="register-btn">
+                            <i></i> Register
+                        </a>
+                    </li>
+                    <li class="nav-item" id="auth-item" id="login-btn">
+                        <a href="login.html" class="nav-link" onclick="loginUser(event)">
+                            <i class="fas fa-sign-in-alt"></i> Log In
+                        </a>
+                    </li>
+
+
+
+
+
+
+
+
+
+                </ul>
+            </div>
+
+
+
+        </div>
+    </nav><br><br><br>
+
+    <div class="profile-container" style="height: 550px">
+        <div class="profile-header">
+            <h1>Profile</h1>
+            <button id="edit-button" class="edit-btn">Edit Profile</button>
+        </div>
+
+        <div class="profile-details">
+            <div class="profile-item">
+                <span class="profile-label">Name:</span>
+                <span class="profile-value" id="profile-name">Mohammad Al-shoramn</span>
+            </div>
+            <div class="profile-item">
+                <span class="profile-label">Email:</span>
+                <span class="profile-value" id="profile-email">nexel@example.com</span>
+            </div>
+            <div class="profile-item">
+                <span class="profile-label">Bio:</span>
+                <span class="profile-value" id="profile-bio">Web Developer specializing in Frontend and Backend.</span>
+            </div>
+            <div class="profile-item">
+                <span class="profile-label">Gender:</span>
+                <span class="profile-value" id="profile-gender">Male</span>
+            </div>
+            <div class="profile-item">
+                <span class="profile-label">Age:</span>
+                <span class="profile-value" id="profile-age">22</span>
+            </div>
+            <div class="profile-item">
+                <span class="profile-label" style="border-color: transparent;">Profile Image:</span>
+                <img id="profile-image" src="default-profile.jpg" alt="Profile Image" width="100"
+                    style="margin-top:270px">
+            </div>
+        </div>
+    </div>
+
+    <div id="edit-profile-modal" class="edit-profile-modal">
+        <div class="modal-content">
+            <span id="close-modal" class="close-modal">&times;</span>
+            <h2>Edit Profile</h2>
+            <form id="edit-profile-form">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" value="Mohammad Al-shorman" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="nexel@example.com" disabled>
+
+                <label for="bio">Bio:</label>
+                <textarea id="bio" name="bio" rows="4"
+                    required>Web Developer specializing in Frontend and Backend.</textarea>
+
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender" required>
+                    <option value="male" selected>Male</option>
+                    <option value="female">Female</option>
+                </select>
+
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" value="22" required>
+
+                <label for="profile-image-upload">Profile Image:</label>
+                <input type="file" id="profile-image-upload" name="profile-image-upload">
+
+                <button type="submit">Save Changes</button>
+
+                <button type="button" id="reset-password-btn-inside" class="reset-password-btn">Reset Password</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="reset-password-modal" class="reset-password-modal">
+        <div class="modal-content">
+            <span id="close-reset-modal" class="close-modal">&times;</span>
+            <h2>Reset Password</h2>
+            <form id="reset-password-form">
+                <label for="old-password">Old Password:</label>
+                <input type="password" id="old-password" name="old-password" required>
+
+                <label for="new-password">New Password:</label>
+                <input type="password" id="new-password" name="new-password" required>
+
+                <label for="confirm-password">Confirm New Password:</label>
+                <input type="password" id="confirm-password" name="confirm-password" required>
+
+                <button type="submit">Reset Password</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- <div id="footer"></div> -->
+    <footer class="ftco-footer ftco-no-pt">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-md pt-5">
+                    <div class="ftco-footer-widget pt-md-5 mb-4">
+                        <h2 class="ftco-heading-2">About</h2>
+                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
+                            there live the
+                            blind texts.</p>
+                        <ul class="ftco-footer-social list-unstyled float-md-left float-lft">
+                            <li class="ftco-animate"><a href="#"><span class="fa fa-twitter"></span></a></li>
+                            <li class="ftco-animate"><a href="#"><span class="fa fa-facebook"></span></a></li>
+                            <li class="ftco-animate"><a href="#"><span class="fa fa-instagram"></span></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md pt-5">
+                    <div class="ftco-footer-widget pt-md-5 mb-4 ml-md-5">
+                        <h2 class="ftco-heading-2">Help Desk</h2>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="py-2 d-block">Customer Care</a></li>
+                            <li><a href="#" class="py-2 d-block">Legal Help</a></li>
+                            <li><a href="#" class="py-2 d-block">Services</a></li>
+                            <li><a href="#" class="py-2 d-block">Privacy and Policy</a></li>
+                            <li><a href="#" class="py-2 d-block">Refund Policy</a></li>
+                            <li><a href="#" class="py-2 d-block">Call Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md pt-5">
+                    <div class="ftco-footer-widget pt-md-5 mb-4">
+                        <h2 class="ftco-heading-2">Recent Courses</h2>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="py-2 d-block">Computer Engineering</a></li>
+                            <li><a href="#" class="py-2 d-block">Web Design</a></li>
+                            <li><a href="#" class="py-2 d-block">Business Studies</a></li>
+                            <li><a href="#" class="py-2 d-block">Civil Engineering</a></li>
+                            <li><a href="#" class="py-2 d-block">Computer Technician</a></li>
+                            <li><a href="#" class="py-2 d-block">Web Developer</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md pt-5">
+                    <div class="ftco-footer-widget pt-md-5 mb-4">
+                        <h2 class="ftco-heading-2">Have a Questions?</h2>
+                        <div class="block-23 mb-3">
+                            <ul>
+                                <li><span class="icon fa fa-map-marker"></span><span class="text">Amman - Jordan</span>
+                                </li>
+                                <li><a href="#"><span class="icon fa fa-phone"></span><span
+                                            class="text">+962797777777</span></a></li>
+                                <li><a href="#"><span class="icon fa fa-paper-plane"></span><span
+                                            class="text">info@nexel.com</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+
+                    <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        Copyright &copy;
+                        <script>document.write(new Date().getFullYear());</script> All rights reserved | This website
+                        is made with
+                        <i class="fa fa-heart" aria-hidden="true"></i> by <a href="about.html" target="_blank">NEXEL
+                            Team</a>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="javascript/disable.js"></script>
+
+    <script>
+        document.getElementById('logout-btn').addEventListener("click", logoutFunction);
+
+        function logoutFunction() {
+            localStorage.clear();
+        }
+    </script>
+
+
+    <script src="/javascript/profile.js"></script>
+</body>
+
+</html>
